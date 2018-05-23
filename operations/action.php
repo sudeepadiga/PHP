@@ -1,3 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>list folder from directory</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+</html>
+
+
+
 <?php
     ob_start();
     include('login.php');
@@ -5,6 +17,8 @@
 	
     
 if($_SESSION["user_mail"]!=='admin@gmail.com'&&$_SESSION["user_nm"]!='admin'&&$_SESSION["user_pwd"]!=='admin'){
+	
+	
 if(isset($_POST["action"]))
 {
 	if($_POST["action"]=="fetch")
@@ -27,11 +41,12 @@ if(isset($_POST["action"]))
 		<tr>
 		<th>Folder name</th>
 		<th> Total File</th>
-		<th> Update</th>
+		<th> Update Folder Name</th>
 		<th> Delete</th>
 		<th> Upload</th>
 		<th> View Uploaded Files</th>
 		<th> Create Text File</th>
+		<th> Search Text File</th>
 		</tr>
 		';
 		if(count($folder)>0)
@@ -39,22 +54,29 @@ if(isset($_POST["action"]))
 			foreach($folder as $name)
 			{
 			if($name!=='.'&&$name!=='..'&&$name!==$_SESSION["user_nm"].'.txt'){
+				if((count(scandir('user_data/'.$_SESSION["user_mail"].'/'.$name)))<=3){
+					$cnt=count(scandir('user_data/'.$_SESSION["user_mail"].'/'.$name))-2;
+				}
+				if((count(scandir('user_data/'.$_SESSION["user_mail"].'/'.$name)))>3){
+					$cnt=count(scandir('user_data/'.$_SESSION["user_mail"].'/'.$name))-3;
+				}
 				$output .='
 				<tr>
 				<td>'.$name.'</td>
-				<td>'.(count(scandir('user_data/'.$_SESSION["user_mail"].'/'.$name))-2).'</td>
-				<td><button type="button" name="update" data-name="'.$name.'" class="update btn btn-warning btn-xs">Update</button></td>
+				<td>'.$cnt.'</td>
+				<td><button type="button" name="update" data-name="'.$name.'" class="update btn btn-warning btn-xs">Rename</button></td>
 				
 				<td><button type="button" name="delete" data-name="'.$name.'" class="delete btn btn-danger btn-xs">Delete</button></td>
 				
-				<td><button type="upload" name="upload" data-name="'.$name.'" class="upload btn btn-info btn-xs"> Upload Images</button></td>
+				<td><button type="upload" name="upload" data-name="'.$name.'" class="upload btn btn-info btn-xs"> Upload Files</button></td>
 				
 				<td><button type="button" name="view_files" data-name="'.$name.'" class="view_files btn btn-default btn-xs"> View Files</button></td>
 				
 				<td><button type="button" name="text_file" data-name="'.$name.'" class="text_file btn btn-default btn-xs">Create File</button></td>
-				</tr>
 				
-				<td><button type="button" name="srch_file" data-name="'.$name.'" class="srch_file btn btn-default btn-xs">Search files</button></td>
+				
+				<td><button type="button" name="srch_file" data-name="'.$name.'" class="srch_file btn btn-primary btn-xs">Search files</button></td>
+
 				</tr>
 				';
 			}
@@ -69,6 +91,7 @@ if(isset($_POST["action"]))
 		}
 		$output .= '</table>';
 		echo $output;
+		echo '<br><br><br><br><br><br><br><br><br><br><br><br>';
 		
 	
 	}
@@ -107,14 +130,16 @@ if(isset($_POST["action"]))
 		<th>Files</th>
 		<th>File Name</th>
 		<th>Delete</th>
+		<th>View Files</th>
 		</tr>
 		';
 		foreach($file_data as $file)
 		{
-			if($file == '.' OR $file == '..')
+			if($file == '.' OR $file == '..' OR $file == 'index.txt')
 			{
 				continue;
 			}
+			
 			else{
 				$path = 'user_data/'.$_SESSION["user_mail"].'/'.$_POST["folder_name"] . '/' . $file;
 				$output .='
@@ -126,13 +151,20 @@ if(isset($_POST["action"]))
 				<td><button name="remove_file"
 				class="remove_file btn btn-danger  btn-xs"
 				id="'.$path.'"> Remove</button></td>
+				<td><button class="btn btn-info btn-xs"><a href="'.$path.'">view</a></button></td>
 				</tr>
 				';
+				
+				
+				
 	}
+	
 }
 $output .='</table>';
 echo $output;
 	}
+
+	
 	if($_POST["action"] == "remove_file")
 	{
 		if(file_exists($_POST["path"]))
@@ -236,12 +268,12 @@ function binarySearch(Array $arr, $x)
 $indexval;
 $stor;
 if(binarySearch($indexval, $stor) == true) {
-	echo $txtname." Exists :) ";
+	echo $txtname." Exists :) <br>";
 	if(file_exists($dir.'/'.$txtname)){
 $path=$dir.'/'.$txtname;
 $contents=file_get_contents($path);
 if(!$contents==''){
-echo ' & File Content: '.$contents;
+echo ' & File Content: <br><br>'   .$contents;
 }
 else{
 	echo ' empty file';
@@ -281,11 +313,12 @@ else{
 		<tr>
 		<th>Folder name</th>
 		<th> Total File</th>
-		<th> Update</th>
+		<th> Update File Name</th>
 		<th> Delete</th>
 		<th> Upload</th>
 		<th> View Uploaded Files</th>
 		<th> Create Text File</th>
+		<th> Search Text File</th>
 		</tr>
 		';
 		if(count($folder)>0)
@@ -297,7 +330,7 @@ else{
 				<tr>
 				<td>'.$name.'</td>
 				<td>'.(count(scandir('user_data/'.$name))-2).'</td>
-				<td><button type="button" name="update" data-name="'.$name.'" class="update btn btn-warning btn-xs">Update</button></td>
+				<td><button type="button" name="update" data-name="'.$name.'" class="update btn btn-warning btn-xs">Rename</button></td>
 				
 				<td><button type="button" name="delete" data-name="'.$name.'" class="delete btn btn-danger btn-xs">Delete</button></td>
 				
@@ -306,9 +339,9 @@ else{
 				<td><button type="button" name="view_files" data-name="'.$name.'" class="view_files btn btn-default btn-xs"> View Files</button></td>
 				
 				<td><button type="button" name="text_file" data-name="'.$name.'" class="text_file btn btn-default btn-xs">Create File</button></td>
-				</tr>
 				
-				<td><button type="button" name="srch_file" data-name="'.$name.'" class="srch_file btn btn-default btn-xs">Search files</button></td>
+				
+				<td><button type="button" name="srch_file" data-name="'.$name.'" class="srch_file btn btn-primary btn-xs">Search files</button></td>
 				</tr>
 				';
 			}
@@ -323,6 +356,7 @@ else{
 		}
 		$output .= '</table>';
 		echo $output;
+		echo '<br><br><br><br><br><br><br><br><br><br><br><br>';
 		
 	
 	}
@@ -365,7 +399,7 @@ else{
 		';
 		foreach($file_data as $file)
 		{
-			if($file == '.' OR $file == '..')
+			if($file == '.' OR $file == '..' OR $file == 'index.txt')
 			{
 				continue;
 			}
@@ -490,15 +524,15 @@ function binarySearch(Array $arr, $x)
 $indexval;
 $stor;
 if(binarySearch($indexval, $stor) == true) {
-	echo $txtname." Exists :) ";
+	echo $txtname." Exists :) <br>";
 	if(file_exists($dir.'/'.$txtname)){
 $path=$dir.'/'.$txtname;
 $contents=file_get_contents($path);
 if(!$contents==''){
-echo ' & File Content: '.$contents;
+echo ' & File Content: <br><br>'    .$contents;
 }
 else{
-	echo ' empty file';
+	echo ' empty file!';
 }
 }
 else{}

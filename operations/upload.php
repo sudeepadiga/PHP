@@ -1,29 +1,26 @@
 <?php
+
+    ob_start();
+    include('login.php');
+    ob_end_clean();
 if($_FILES["upload_file"]["name"]!='')
 {
-	
-	$data = explode(".",$_FILES["upload_file"]["name"]);
-	$extension = $data[1];
-	$allowed_extension = array("jpg", "png", "gif");
-	if(in_array($extension, $allowed_extension))
-	{
-		$new_file_name = rand() . '.' .$extension;
-	$path = $_POST["hidden_folder_name"] . '/' . $new_file_name;
+
+
+	$path = 'user_data/'.$_SESSION["user_mail"].'/'.$_POST["hidden_folder_name"] . '/' .basename($_FILES["upload_file"]["name"]);
 	if(move_uploaded_file($_FILES["upload_file"]["tmp_name"],$path))
 	{
-		echo 'Image Uploaded';
+		echo 'File Uploaded';
 	}
 	else{
 		echo 'There is some error';
 }
-	}
-    else{
-	    echo 'Invalid Image File';
-}
+	
+
 }
 else 
 {
-	echo 'Please Select Imgae';
+	echo 'Please Select File';
 }
 	
 

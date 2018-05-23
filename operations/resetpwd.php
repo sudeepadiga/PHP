@@ -10,11 +10,11 @@ if(isset($_POST["action"])){
 			if(fwrite($file,$pwd)){
 				echo 'password reset successful';
 			}
-		
+		}
 		else{
 			echo 'password not matching';
 		}
-		}
+		
 	}
 	else{
 		echo 'Please enter all the data!!';

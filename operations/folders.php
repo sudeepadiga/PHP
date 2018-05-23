@@ -9,8 +9,26 @@
 <body>
 <br /><br />
 <div class="container">
-<h2 align="center">Manage your Folders</a></h2>
+<h1 align="center"><p style="color:blue">Manage your Folders</p></a></h1>
 <br /><br />
+<?php
+    ob_start();
+    include('login.php');
+    ob_end_clean();
+	
+	
+		$today = getdate();
+	$hrs = $today['hours']+4;
+	if($hrs<12){
+echo '<center><h3>Hi '.$_SESSION["user_nm"].',</h3><img src = "images/morning.gif"></center><br><br><br>';
+	}
+	else if($hrs<15){
+echo '<center><h3>Hi '.$_SESSION["user_nm"].',</h3><img src = "images/afternoon.gif"></center><br><br><br>';
+	}
+else{
+echo '<center><h3>Hi '.$_SESSION["user_nm"].',</h3><img src = "images/evening.gif"></center><br><br><br>';
+}
+	?>
 <div align="left">
  <a href="index.php"><button type="button" name="logout" id="logout" class="btn btn-danger">logout</button></a>
 </div>
@@ -145,6 +163,10 @@ text file name:<input type="text" name="fname" id="fname" class="form-control" p
 </div>
 
 
+
+
+
+
 <script>
 $(document).ready(function(){
 	load_folder_list();
@@ -261,6 +283,8 @@ $(document).on('click', '.remove_file', function(){
 		return false;
 	}
 });
+
+
 $(document).on('click', '.delete', function(){
 	var folder_name = $(this).data("name");
 	var action = "delete";
@@ -328,9 +352,12 @@ $(document).on('click','#create_txt', function(){
                 var myWindow = window.open("", "MsgWindow", "width=800,height=600");
                 myWindow.document.write("<h2>"+data.fontcolor("gray")+"</h2>")				
 				$('#srchModal').modal('hide');
+				load_folder_list();
 			}
 		})
 	});
+
+	
 
 });
 
@@ -341,6 +368,5 @@ if(isset($_POST["logout"])){
 session_destroy();
 
 }
-
 ?>
 

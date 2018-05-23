@@ -52,6 +52,7 @@ if(isset($_POST["action"]))
 		$_SESSION["user_pwd"] = $_POST["pwd"];
 		$_SESSION["user_nm"] = $_POST["username"];
 		$_SESSION["user_mail"] = $_POST["mail"]; 
+		if(file_exists('user_data/'.$_SESSION["user_mail"].'/'.$_SESSION["user_nm"].'.txt')){
 		$file = fopen('user_data/'.$_SESSION["user_mail"].'/'.$_SESSION["user_nm"].'.txt','r');
 		while(!feof($file)) {
 			$line = fgets($file);
@@ -63,6 +64,11 @@ if(isset($_POST["action"]))
 		else{
 			echo 'wrong password or gmail!!';
 		}
+		}
+		else{
+			echo 'wrong gmail or password!!';
+		}
+		
 		
 	
 		}

@@ -10,6 +10,7 @@
 <br /><br />
 <div class="container">
 <h2 align="center">WELCOME!</a></h2>
+<h3 align="center">Please register before login !</a></h3>
 <br /><br />
 <div align="right">
   <button type="button" name="login" id="login" class="btn btn-primary">Login</button>
