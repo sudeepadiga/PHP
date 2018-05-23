@@ -1,15 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>list folder from directory</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-</head>
-</html>
-
-
-
 <?php
     ob_start();
     include('login.php');
@@ -85,7 +73,7 @@ if(isset($_POST["action"]))
 		else{
 			$output .='
 			<tr>
-			<td colspan="6">no folder found</td>
+			<td colspan="8">no folder found</td>
 			</tr>
 			';
 		}
